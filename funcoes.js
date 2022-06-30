@@ -29,7 +29,7 @@ const descrever = id => {
 
 const adicionar = (nomeDoCachorro, sexoDoCachorro, cachorroCastrado, dataNascimentoDoCachorro, pesoDoCachorro) => {
     let novoCachorro = {
-        id: cachorros.length + 1,
+        id: cachorros[cachorros.length - 1].id + 1,
         nome: nomeDoCachorro,
         sexo: sexoDoCachorro,
         castrado: cachorroCastrado,
@@ -60,10 +60,19 @@ const vacinar = (idDoCachorroVacinado, vacina) => {
     salvar(cachorros)
 }
 
+const remover = (idCachorro) => {
+    if(buscar(idCachorro)) {
+        salvar(cachorros.filter(cachorro => cachorro.id != idCachorro))
+    } else {
+        console.log("Cachorro inexistente")
+    }
+}
+
 module.exports = {
     buscar,
     listar,
     descrever,
     adicionar,
-    vacinar
+    vacinar,
+    remover
 }
