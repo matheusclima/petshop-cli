@@ -60,6 +60,19 @@ const vacinar = (idDoCachorroVacinado, vacina) => {
     salvar(cachorros)
 }
 
+const atribuirServico = (idCachorro, servico) => {
+    let cachorro = buscar(idCachorro)
+    if(!cachorro) {
+        return
+    }
+
+    cachorro.servicos.push({
+        nome: servico,
+        data: new Date().toISOString().substr(0, 10)
+    })
+    salvar(cachorros)
+}
+
 const remover = (idCachorro) => {
     if(buscar(idCachorro)) {
         salvar(cachorros.filter(cachorro => cachorro.id != idCachorro))
@@ -74,5 +87,6 @@ module.exports = {
     descrever,
     adicionar,
     vacinar,
+    atribuirServico,
     remover
 }
