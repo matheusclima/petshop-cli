@@ -11,20 +11,27 @@ const buscar = id => {
     let cachorroProcurado = cachorros.find(cachorro => cachorro.id === id)
     if(cachorroProcurado) {
         return cachorroProcurado
-    } else {
-        console.log("Cachorro não encontrado")
-    }
+    } 
+    console.log("Cachorro não encontrado")
 }
 
 const listar = () => console.table(cachorros)
 
 const descrever = id => {
     let cachorroProcurado = buscar(id)
-    if( cachorroProcurado ) {
-        console.table(cachorroProcurado)
-    } else {
+    if( !cachorroProcurado ) {
         console.log(`Não existe cachorro com o id ${id}`)
+        return
     }
+    console.log(`Nome: ${cachorroProcurado.nome}`)
+    console.log(`Sexo: ${cachorroProcurado.sexo === "m" ? "Macho":"Fêmea"}`)
+    console.log(`Castrado: ${cachorroProcurado.castrado ? "Sim":"Não"}`)
+    console.log(`Nascimento: ${cachorroProcurado.dataDeNascimento}`)
+    console.log(`Peso: ${cachorroProcurado.peso} kg`)
+    console.log(`Vacinas: `)
+    console.table(cachorroProcurado.vacinas)
+    console.log(`Serviços: `)
+    console.table(cachorroProcurado.servicos)
 }
 
 const adicionar = (nomeDoCachorro, sexoDoCachorro, cachorroCastrado, dataNascimentoDoCachorro, pesoDoCachorro) => {
@@ -35,7 +42,6 @@ const adicionar = (nomeDoCachorro, sexoDoCachorro, cachorroCastrado, dataNascime
         castrado: cachorroCastrado,
         dataDeNascimento: dataNascimentoDoCachorro,
         peso: pesoDoCachorro,
-        sexo: sexoDoCachorro,
         vacinas: [],
         servicos: [] 
     }
@@ -44,19 +50,17 @@ const adicionar = (nomeDoCachorro, sexoDoCachorro, cachorroCastrado, dataNascime
 }
 
 const vacinar = (idDoCachorroVacinado, vacina) => {
-    let cachorroVacinado = buscar(idDoCachorroVacinado)
+    let cachorroParaReceberVacina = buscar(idDoCachorroVacinado)
     let data = new Date().toISOString().substr(0, 10)
-    if(cachorroVacinado) {
-        
-        cachorros[idDoCachorroVacinado - 1].vacinas.push({
-            vacina: vacina,
-            data: data
-        })
-
-    } else {
-        console.log("Cachorro inexistente")
+    
+    if( !cachorroParaReceberVacina ) {
+        return
     }
 
+    cachorroParaReceberVacina.vacinas.push({
+        vacina: vacina,
+        data: data
+    })
     salvar(cachorros)
 }
 
@@ -74,11 +78,11 @@ const atribuirServico = (idCachorro, servico) => {
 }
 
 const remover = (idCachorro) => {
-    if(buscar(idCachorro)) {
-        salvar(cachorros.filter(cachorro => cachorro.id != idCachorro))
-    } else {
-        console.log("Cachorro inexistente")
+    let cachorroRemovido = buscar(idCachorro)
+    if(!cachorroRemovido) {
+        return
     }
+    salvar(cachorros.filter(cachorro => cachorro !== cachorroRemovido))
 }
 
 module.exports = {
