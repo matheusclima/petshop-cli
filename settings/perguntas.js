@@ -41,6 +41,7 @@ const perguntas = [
         type: 'number',
         name: 'idDoCachorroServico',
         message: 'Qual o index do cachorro que realizou o serviço?',
+        filter: valor => Number(valor),
         when: respostas => respostas.acao == acoes.SERVICO
     },
     {
@@ -96,6 +97,7 @@ const perguntas = [
         type: 'input',
         name: 'idCachorroParaRemover',
         message: 'Qual o id do cachorro que deseja remover?',
+        filter: valor => Number(valor),
         when: respostas => respostas.acao == acoes.REMOVER
     },
     {
