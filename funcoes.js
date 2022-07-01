@@ -15,7 +15,17 @@ const buscar = id => {
     console.log("Cachorro não encontrado")
 }
 
-const listar = () => console.table(cachorros)
+const listar = () => {
+    console.table(cachorros.map(cachorro => {
+        return {
+            id: cachorro.id,
+            nome: cachorro.nome,
+            sexo: cachorro.sexo === "m" ? "Macho" : "Fêmea",
+            castrado: cachorro.castrado ? "Sim" : "Não",
+            peso: `${cachorro.peso} kg`
+        }
+    }))
+}
 
 const descrever = id => {
     let cachorroProcurado = buscar(id)
@@ -24,8 +34,8 @@ const descrever = id => {
         return
     }
     console.log(`Nome: ${cachorroProcurado.nome}`)
-    console.log(`Sexo: ${cachorroProcurado.sexo === "m" ? "Macho":"Fêmea"}`)
-    console.log(`Castrado: ${cachorroProcurado.castrado ? "Sim":"Não"}`)
+    console.log(`Sexo: ${cachorroProcurado.sexo === "m" ? "Macho" : "Fêmea"}`)
+    console.log(`Castrado: ${cachorroProcurado.castrado ? "Sim" : "Não"}`)
     console.log(`Nascimento: ${cachorroProcurado.dataDeNascimento}`)
     console.log(`Peso: ${cachorroProcurado.peso} kg`)
     console.log(`Vacinas: `)
@@ -46,7 +56,7 @@ const adicionar = (nomeDoCachorro, sexoDoCachorro, cachorroCastrado, dataNascime
         servicos: [] 
     }
     cachorros.push(novoCachorro)
-    salvar(cachorros)
+    salvar()
 }
 
 const vacinar = (idDoCachorroVacinado, vacina) => {
@@ -61,7 +71,7 @@ const vacinar = (idDoCachorroVacinado, vacina) => {
         vacina: vacina,
         data: data
     })
-    salvar(cachorros)
+    salvar()
 }
 
 const atribuirServico = (idCachorro, servico) => {
@@ -74,15 +84,17 @@ const atribuirServico = (idCachorro, servico) => {
         nome: servico,
         data: new Date().toISOString().substr(0, 10)
     })
-    salvar(cachorros)
+    salvar()
 }
 
 const remover = (idCachorro) => {
     let cachorroRemovido = buscar(idCachorro)
+    let index = cachorros.indexOf(cachorroRemovido)
     if(!cachorroRemovido) {
         return
     }
-    salvar(cachorros.filter(cachorro => cachorro !== cachorroRemovido))
+    cachorros.splice(index, 1)
+    salvar()
 }
 
 module.exports = {
